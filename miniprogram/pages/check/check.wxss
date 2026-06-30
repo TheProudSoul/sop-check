@@ -390,3 +390,20 @@
     transform: rotate(360deg) scale(0.6);
   }
 }
+
+/* 分享按钮 */
+.bar-share {
+  flex: 0 0 auto;
+  padding: 16rpx 28rpx;
+  background: #f0f7f7;
+  border-radius: 40rpx;
+  border: none;
+  margin: 0;
+  line-height: normal;
+  font-size: 28rpx;
+  color: #4ecdc4;
+  font-weight: 500;
+}
+.bar-share::after { border: none; }
+.bar-share-text { font-size: 28rpx; color: #4ecdc4; font-weight: 500; }
+

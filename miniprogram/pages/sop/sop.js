@@ -265,17 +265,7 @@ Page({
     wx.navigateBack()
   },
 
-  shareSop() {
-    wx.showShareMenu({ withShareTicket: true })
-  },
-
-  // 微信分享
-  onShareAppMessage() {
-    return {
-      title: `${this.data.sop.emoji || '📋'} ${this.data.sop.title}`,
-      path: `/pages/share/share?id=${this.data.sop._id}`,
-    }
-  },
+  // 微信分享（由分享弹窗中的 open-type="share" 触发）
 
   startCheck() {
     // Bug修复：编辑后未保存直接打勾，先自动保存

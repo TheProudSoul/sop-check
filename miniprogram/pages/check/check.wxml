@@ -80,6 +80,9 @@
     <view class="bar-reset" bindtap="resetAll">
       <text class="bar-reset-text">重置</text>
     </view>
+    <button class="bar-share" open-type="share">
+      <text class="bar-share-text">分享</text>
+    </button>
     <view class="bar-finish {{progress === 100 ? '' : 'bar-finish-disabled'}}"
           bindtap="{{progress === 100 ? 'finishCheck' : ''}}">
       <text class="bar-finish-text">
