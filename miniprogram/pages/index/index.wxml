@@ -1,8 +1,8 @@
 <view class="container">
   <!-- 顶部状态栏 -->
   <view class="header">
-    <text class="title">SOP Check</text>
-    <text class="subtitle">出行前，打勾确认</text>
+    <text class="title">勾GO</text>
+    <text class="subtitle">勾完再走</text>
   </view>
 
   <!-- 搜索栏 -->
