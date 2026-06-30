@@ -13,11 +13,17 @@ Page({
   },
 
   onShow() {
-    this.loadSops()
+    if (getApp().globalData.sopNeedsRefresh) {
+      this.loadSops()
+      getApp().globalData.sopNeedsRefresh = false
+    }
+  },
+
+  onPullDownRefresh() {
+    this.loadSops().then(() => wx.stopPullDownRefresh())
   },
 
   async loadSops() {
-    wx.showLoading({ title: '加载中...' })
     try {
       const { data } = await db.collection('sops')
         .where({ _openid: '{openid}' })
@@ -31,7 +37,6 @@ Page({
       this.setData({ sops: local })
       this.filterByTab()
     }
-    wx.hideLoading()
   },
 
   filterByTab() {

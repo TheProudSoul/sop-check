@@ -67,6 +67,14 @@
         <text class="forked-tag-icon">⑂</text>
         <text class="forked-tag-text">Fork来的</text>
       </view>
+
+      <!-- 公开设置 -->
+      <view class="public-row" wx:if="{{!sop.forked_from}}">
+        <text class="public-label">{{sop.is_public !== false ? '🌍 公开' : '🔒 仅自己可见'}}</text>
+        <view class="public-toggle {{sop.is_public !== false ? 'toggle-on' : 'toggle-off'}}" bindtap="togglePublic">
+          <view class="toggle-thumb"/>
+        </view>
+      </view>
     </view>
   </view>
 

@@ -65,6 +65,8 @@ Page({
       emoji: original.emoji,
       groups: deepClone(original.groups || []),
       forked_from: original._id,
+      is_public: true,
+      fork_count: 0,
       created_at: now,
       updated_at: now,
     }

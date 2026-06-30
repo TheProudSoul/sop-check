@@ -364,3 +364,54 @@
   margin-top: 24rpx;
   padding: 12rpx 40rpx;
 }
+
+/* 公开设置 */
+.public-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20rpx;
+  padding: 16rpx 20rpx;
+  background: #fafbfc;
+  border-radius: 16rpx;
+}
+
+.public-label {
+  font-size: 26rpx;
+  color: #636e72;
+}
+
+.public-toggle {
+  width: 80rpx;
+  height: 44rpx;
+  border-radius: 22rpx;
+  position: relative;
+  transition: background 0.3s;
+}
+
+.toggle-on {
+  background: #4ecdc4;
+}
+
+.toggle-off {
+  background: #d0d0d0;
+}
+
+.toggle-thumb {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  background: #fff;
+  position: absolute;
+  top: 4rpx;
+  transition: left 0.3s;
+  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.15);
+}
+
+.toggle-on .toggle-thumb {
+  left: 40rpx;
+}
+
+.toggle-off .toggle-thumb {
+  left: 4rpx;
+}

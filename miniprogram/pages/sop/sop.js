@@ -133,6 +133,7 @@ Page({
     try {
       if (this.data.isNew) {
         sop.created_at = now
+        sop.is_public = sop.is_public !== undefined ? sop.is_public : true
         const { _id } = await db.collection('sops').add({ data: sop })
         sop._id = _id
         this.setData({ isNew: false, isEdit: false, sop })
@@ -263,6 +264,17 @@ Page({
 
   goBack() {
     wx.navigateBack()
+  },
+
+  togglePublic() {
+    const newVal = !this.data.sop.is_public
+    this.setData({ 'sop.is_public': newVal })
+    // 如果非编辑模式，直接保存
+    if (!this.data.isEdit && this.data.sop._id) {
+      db.collection('sops').doc(this.data.sop._id).update({
+        data: { is_public: newVal }
+      }).catch(e => console.error('更新公开状态失败', e))
+    }
   },
 
   // 微信分享（由分享弹窗中的 open-type="share" 触发）

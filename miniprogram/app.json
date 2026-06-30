@@ -1,6 +1,8 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/explore/explore",
+    "pages/history/history",
     "pages/sop/sop",
     "pages/check/check",
     "pages/share/share"
@@ -11,6 +13,32 @@
     "navigationBarTitleText": "SOP Check",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#f7f8fc"
+  },
+  "tabBar": {
+    "color": "#636e72",
+    "selectedColor": "#4ecdc4",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "我的SOP",
+        "iconPath": "assets/tab-my.png",
+        "selectedIconPath": "assets/tab-my-active.png"
+      },
+      {
+        "pagePath": "pages/explore/explore",
+        "text": "广场",
+        "iconPath": "assets/tab-explore.png",
+        "selectedIconPath": "assets/tab-explore-active.png"
+      },
+      {
+        "pagePath": "pages/history/history",
+        "text": "历史",
+        "iconPath": "assets/tab-history.png",
+        "selectedIconPath": "assets/tab-history-active.png"
+      }
+    ]
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2",

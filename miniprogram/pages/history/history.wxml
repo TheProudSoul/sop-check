@@ -1,0 +1,66 @@
+<view class="container">
+  <!-- 顶部 -->
+  <view class="header">
+    <text class="title">使用历史</text>
+    <text class="subtitle">回顾每一次打勾</text>
+  </view>
+
+  <!-- 统计概览 -->
+  <view class="stats-row" wx:if="{{stats.totalCount > 0}}">
+    <view class="stat-card card">
+      <text class="stat-num">{{stats.totalCount}}</text>
+      <text class="stat-label">总使用次数</text>
+    </view>
+    <view class="stat-card card" wx:if="{{stats.topSop}}">
+      <text class="stat-sop-name">{{stats.topSop}}</text>
+      <text class="stat-label">最常使用</text>
+    </view>
+    <view class="stat-card card">
+      <text class="stat-num">{{stats.avgRate}}%</text>
+      <text class="stat-label">平均完成率</text>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-state" wx:if="{{loading}}">
+    <view class="loading-spinner"/>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 历史列表 -->
+  <view class="history-list" wx:if="{{!loading && groupedUsages.length > 0}}">
+    <view class="date-group" wx:for="{{groupedUsages}}" wx:key="date">
+      <view class="date-header">
+        <text class="date-text">{{item.date}}</text>
+      </view>
+      <view class="usage-card card" wx:for="{{item.items}}" wx:for-item="usage" wx:key="index"
+            bindtap="goToSop" data-id="{{usage.sop_id}}">
+        <view class="usage-emoji">{{usage.sop_emoji || '📋'}}</view>
+        <view class="usage-body">
+          <text class="usage-title">{{usage.sop_title || '未命名SOP'}}</text>
+          <view class="usage-meta-row">
+            <text class="usage-time">{{formatTime(usage.finished_at)}}</text>
+            <view class="usage-rate">
+              <text class="rate-text {{completionRate(usage.checked_count, usage.total_count) >= 100 ? 'rate-full' : ''}}">
+                {{usage.checked_count || 0}}/{{usage.total_count || 0}}
+              </text>
+              <view class="rate-bar">
+                <view class="rate-fill" style="width: {{completionRate(usage.checked_count, usage.total_count)}}%"/>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="usage-check" wx:if="{{completionRate(usage.checked_count, usage.total_count) >= 100}}">
+          <text class="check-mark">✓</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && groupedUsages.length === 0}}">
+    <text class="empty-icon">📊</text>
+    <text class="empty-text">还没有使用记录</text>
+    <text class="empty-hint">完成一次SOP打勾后就会出现在这里</text>
+  </view>
+</view>
