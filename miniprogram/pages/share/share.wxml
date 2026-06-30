@@ -1,0 +1,59 @@
+<view class="page">
+  <!-- 顶部 -->
+  <view class="hero">
+    <text class="hero-label">来自朋友的SOP</text>
+  </view>
+
+  <!-- SOP信息卡 -->
+  <view class="info-card card">
+    <view class="info-emoji-row">
+      <view class="emoji-box">
+        <text class="emoji-display">{{sop.emoji || '📋'}}</text>
+      </view>
+    </view>
+    <text class="info-title">{{sop.title}}</text>
+    <view class="info-tag-row">
+      <view class="info-tag">
+        <text class="info-tag-text">{{sop.category || '未分类'}}</text>
+      </view>
+    </view>
+    <view class="info-stats">
+      <view class="info-stat">
+        <text class="info-stat-num">{{totalItems}}</text>
+        <text class="info-stat-label">条目</text>
+      </view>
+      <view class="info-stat-divider"/>
+      <view class="info-stat">
+        <text class="info-stat-num">{{mustCount}}</text>
+        <text class="info-stat-label">必带</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 分组预览 -->
+  <view class="groups">
+    <view class="group card" wx:for="{{sop.groups}}" wx:key="name">
+      <view class="group-head">
+        <view class="group-head-left">
+          <view class="group-bar"/>
+          <text class="group-name">{{item.name}}</text>
+        </view>
+        <text class="group-count">{{item.items.length}}项</text>
+      </view>
+      <view class="item-row" wx:for="{{item.items}}" wx:key="name" wx:for-item="sub">
+        <view class="item-dot {{sub.priority === 'must' ? 'dot-must' : sub.priority === 'optional' ? 'dot-optional' : 'dot-default'}}"/>
+        <text class="item-name">{{sub.name}}</text>
+        <text class="item-note" wx:if="{{sub.note}}">{{sub.note}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Fork底部栏 -->
+  <view class="fork-bar">
+    <view class="fork-btn" bindtap="forkSop">
+      <text class="fork-btn-icon">⑂</text>
+      <text class="fork-btn-text">Fork到我名下</text>
+    </view>
+    <text class="fork-hint">复制一份到你的SOP库，可以自由修改</text>
+  </view>
+</view>

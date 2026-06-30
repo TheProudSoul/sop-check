@@ -1,0 +1,392 @@
+/* ───────────────────────────────
+   打勾使用页
+   ─────────────────────────────── */
+
+.page {
+  min-height: 100vh;
+  background: #f7f8fc;
+  padding-bottom: 160rpx;
+}
+
+/* 进度区 */
+.progress-section {
+  background: linear-gradient(135deg, #1a1a2e 0%, #2d3561 100%);
+  padding: 32rpx 32rpx 24rpx;
+}
+
+.progress-track {
+  height: 12rpx;
+  background: rgba(255,255,255,0.15);
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4ecdc4, #a8edea);
+  border-radius: 6rpx;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16rpx;
+}
+
+.progress-left {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.progress-emoji {
+  font-size: 32rpx;
+}
+
+.progress-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #fff;
+  max-width: 400rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.progress-pct {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #4ecdc4;
+}
+
+/* 统计卡片行 */
+.stats-row {
+  display: flex;
+  gap: 16rpx;
+  padding: 20rpx 24rpx 0;
+}
+
+.stat-card {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4rpx;
+  padding: 20rpx 16rpx;
+}
+
+.stat-complete {
+  background: linear-gradient(135deg, #4ecdc4, #44b09e);
+}
+
+.stat-complete .stat-big,
+.stat-complete .stat-sep,
+.stat-complete .stat-total,
+.stat-complete .stat-unit {
+  color: #fff !important;
+}
+
+.stat-big {
+  font-size: 44rpx;
+  font-weight: 800;
+  color: #4ecdc4;
+}
+
+.stat-big-danger {
+  color: #ff6b6b;
+}
+
+.stat-sep {
+  font-size: 28rpx;
+  color: #ccc;
+}
+
+.stat-total {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #999;
+}
+
+.stat-unit {
+  font-size: 22rpx;
+  color: #999;
+  margin-left: 6rpx;
+}
+
+.stat-must-card {
+  flex: 0 0 auto;
+  min-width: 200rpx;
+}
+
+/* 分组 */
+.groups {
+  padding: 16rpx 24rpx 0;
+}
+
+.group {
+  margin-bottom: 16rpx;
+  overflow: hidden;
+}
+
+.group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18rpx 24rpx;
+  background: #fafbfc;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.group-head-left {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.group-indicator {
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: #ccc;
+  transition: background 0.3s;
+}
+
+.indicator-done {
+  background: #4ecdc4;
+}
+
+.group-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2d3436;
+}
+
+.group-count {
+  font-size: 24rpx;
+  color: #999;
+  font-weight: 500;
+}
+
+.count-done {
+  color: #4ecdc4;
+}
+
+/* 勾选项 */
+.check-row {
+  display: flex;
+  align-items: center;
+  padding: 22rpx 24rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+  transition: background 0.25s ease;
+}
+
+.check-row:last-child {
+  border-bottom: none;
+}
+
+.row-checked {
+  background: #f6fcfb;
+}
+
+.row-must {
+  background: #fff8f8;
+}
+
+.row-hover {
+  background: #f0f0f0;
+}
+
+/* 复选框 */
+.checkbox-wrap {
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.checkbox {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  border: 3rpx solid #d0d0d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #fff;
+}
+
+.cb-checked {
+  background: #4ecdc4;
+  border-color: #4ecdc4;
+  transform: scale(1.05);
+}
+
+.cb-must {
+  border-color: #ff6b6b;
+  border-width: 3rpx;
+}
+
+.checkbox-inner {
+  animation: checkPop 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes checkPop {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.checkbox-tick {
+  font-size: 26rpx;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* 内容 */
+.check-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.check-name {
+  font-size: 30rpx;
+  color: #2d3436;
+  display: block;
+  transition: color 0.2s;
+}
+
+.name-done {
+  color: #aaa;
+  text-decoration: line-through;
+  text-decoration-color: #ccc;
+}
+
+.check-note {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 4rpx;
+  display: block;
+}
+
+/* 必带标记 */
+.must-badge {
+  margin-left: 12rpx;
+  flex-shrink: 0;
+  padding: 4rpx 12rpx;
+  background: rgba(255,107,107,0.12);
+  border-radius: 8rpx;
+}
+
+.must-badge-text {
+  font-size: 20rpx;
+  font-weight: 700;
+  color: #ff6b6b;
+}
+
+/* 空状态 */
+.empty-check {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 120rpx;
+}
+
+.empty-check-icon {
+  font-size: 72rpx;
+  margin-bottom: 16rpx;
+}
+
+.empty-check-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 底部操作栏 */
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 16rpx 28rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  box-shadow: 0 -2rpx 16rpx rgba(0,0,0,0.04);
+  z-index: 10;
+}
+
+.bar-reset {
+  padding: 22rpx 32rpx;
+  border-radius: 40rpx;
+  background: #f0f0f0;
+  flex-shrink: 0;
+}
+
+.bar-reset-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.bar-finish {
+  flex: 1;
+  text-align: center;
+  padding: 22rpx;
+  border-radius: 40rpx;
+  background: linear-gradient(135deg, #4ecdc4, #3ab8b0);
+  box-shadow: 0 4rpx 16rpx rgba(78,205,196,0.35);
+  transition: opacity 0.2s;
+}
+
+.bar-finish-disabled {
+  background: #e0e0e0;
+  box-shadow: none;
+}
+
+.bar-finish-text {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* 🎉 庆祝动画 */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.confetti {
+  position: absolute;
+  font-size: 48rpx;
+  animation: confettiFall 2s ease-out forwards;
+}
+
+.c1 { left: 15%; animation-delay: 0s; }
+.c2 { left: 35%; animation-delay: 0.15s; }
+.c3 { left: 55%; animation-delay: 0.3s; }
+.c4 { left: 75%; animation-delay: 0.1s; }
+.c5 { left: 90%; animation-delay: 0.25s; }
+
+@keyframes confettiFall {
+  0% {
+    top: -10%;
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(180deg) scale(1.2);
+  }
+  100% {
+    top: 60%;
+    opacity: 0;
+    transform: rotate(360deg) scale(0.6);
+  }
+}

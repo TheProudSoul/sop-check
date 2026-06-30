@@ -1,0 +1,146 @@
+<view class="page">
+  <!-- 编辑模式顶栏 -->
+  <view class="topbar" wx:if="{{isEdit}}">
+    <view class="topbar-btn" bindtap="cancelEdit"><text>取消</text></view>
+    <text class="topbar-title">{{isNew ? '新建SOP' : '编辑SOP'}}</text>
+    <view class="topbar-btn topbar-save" bindtap="saveSop"><text>保存</text></view>
+  </view>
+
+  <!-- 查看模式顶栏 -->
+  <view class="topbar" wx:if="{{!isEdit}}">
+    <view class="topbar-btn" bindtap="goBack"><text>← 返回</text></view>
+    <text class="topbar-title">{{sop.title || 'SOP详情'}}</text>
+    <view class="topbar-actions">
+      <view class="topbar-btn" bindtap="shareSop"><text class="color-primary">分享</text></view>
+      <view class="topbar-btn" bindtap="editSop"><text class="color-primary">编辑</text></view>
+      <view class="topbar-btn" bindtap="deleteSop"><text class="color-danger">删除</text></view>
+    </view>
+  </view>
+
+  <!-- SOP信息卡 -->
+  <view class="info-card card">
+    <view class="info-emoji-row">
+      <view class="emoji-box {{isEdit ? 'emoji-interactive' : ''}}" bindtap="{{isEdit ? 'pickEmoji' : ''}}">
+        <text class="emoji-display">{{sop.emoji || '📋'}}</text>
+        <text class="emoji-change" wx:if="{{isEdit}}">换</text>
+      </view>
+    </view>
+
+    <view class="info-fields">
+      <input class="input-title" wx:if="{{isEdit}}"
+             placeholder="SOP标题" placeholder-class="ph-title"
+             value="{{sop.title}}" bindinput="onTitleInput"/>
+      <text class="display-title" wx:if="{{!isEdit}}">{{sop.title}}</text>
+
+      <view class="category-row">
+        <input class="input-category" wx:if="{{isEdit}}"
+               placeholder="分类标签" placeholder-class="ph-category"
+               value="{{sop.category}}" bindinput="onCategoryInput"/>
+        <view class="category-tag" wx:if="{{!isEdit && sop.category}}">
+          <text class="category-tag-text">{{sop.category}}</text>
+        </view>
+        <text class="category-tag" wx:if="{{!isEdit && !sop.category}}">
+          <text class="category-tag-text">未分类</text>
+        </text>
+      </view>
+
+      <!-- 查看模式统计 -->
+      <view class="info-stats" wx:if="{{!isEdit}}">
+        <view class="info-stat">
+          <text class="info-stat-num">{{groupCount}}</text>
+          <text class="info-stat-label">分组</text>
+        </view>
+        <view class="info-stat-divider"/>
+        <view class="info-stat">
+          <text class="info-stat-num">{{itemCount}}</text>
+          <text class="info-stat-label">条目</text>
+        </view>
+        <view class="info-stat-divider"/>
+        <view class="info-stat">
+          <text class="info-stat-num">{{mustCount}}</text>
+          <text class="info-stat-label">必带</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 分组列表 -->
+  <view class="groups">
+    <view class="group card" wx:for="{{sop.groups}}" wx:key="name" wx:for-index="gIdx" wx:for-item="group">
+      <view class="group-head">
+        <view class="group-head-left">
+          <view class="group-bar"/>
+          <input class="input-group-name" wx:if="{{isEdit}}"
+                 placeholder="分组名" value="{{group.name}}"
+                 bindinput="onGroupNameInput" data-gidx="{{gIdx}}"/>
+          <text class="group-name" wx:if="{{!isEdit}}">{{group.name || '未命名分组'}}</text>
+        </view>
+        <view class="group-head-right">
+          <text class="group-count">{{group.items.length}}项</text>
+          <view class="group-del" wx:if="{{isEdit}}" catchtap="deleteGroup" data-gidx="{{gIdx}}">
+            <text class="group-del-icon">×</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="item-row {{item.priority === 'must' ? 'item-must' : item.priority === 'optional' ? 'item-optional' : ''}}"
+            wx:for="{{group.items}}" wx:key="name" wx:for-index="iIdx" wx:for-item="item">
+        <!-- 优先级指示条 -->
+        <view class="priority-bar {{item.priority === 'must' ? 'bar-must' : item.priority === 'optional' ? 'bar-optional' : 'bar-normal'}}"/>
+
+        <!-- 优先级标签 -->
+        <view class="item-priority-tag" wx:if="{{item.priority === 'must'}}">
+          <text class="priority-tag-text must-text">必</text>
+        </view>
+        <view class="item-priority-tag" wx:if="{{item.priority === 'optional'}}">
+          <text class="priority-tag-text optional-text">选</text>
+        </view>
+
+        <view class="item-body">
+          <input class="input-item-name" wx:if="{{isEdit}}"
+                 placeholder="物品名" value="{{item.name}}"
+                 bindinput="onItemNameInput" data-gidx="{{gIdx}}" data-iidx="{{iIdx}}"/>
+          <text class="item-name-text" wx:if="{{!isEdit}}">{{item.name}}</text>
+          <input class="input-item-note" wx:if="{{isEdit}}"
+                 placeholder="备注（选填）" value="{{item.note}}"
+                 bindinput="onItemNoteInput" data-gidx="{{gIdx}}" data-iidx="{{iIdx}}"/>
+          <text class="item-note-text" wx:if="{{!isEdit && item.note}}">{{item.note}}</text>
+        </view>
+
+        <view class="item-ops" wx:if="{{isEdit}}">
+          <view class="op-priority" catchtap="togglePriority" data-gidx="{{gIdx}}" data-iidx="{{iIdx}}">
+            <text class="op-priority-dot {{item.priority === 'must' ? 'dot-must' : item.priority === 'optional' ? 'dot-optional' : 'dot-normal'}}"/>
+          </view>
+          <view class="op-del" catchtap="deleteItem" data-gidx="{{gIdx}}" data-iidx="{{iIdx}}">
+            <text class="op-del-icon">×</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 添加条目 -->
+      <view class="add-item-btn" wx:if="{{isEdit}}" bindtap="addItem" data-gidx="{{gIdx}}">
+        <text class="add-item-text">+ 添加条目</text>
+      </view>
+    </view>
+
+    <!-- 添加分组 -->
+    <view class="add-group-btn card" wx:if="{{isEdit}}" bindtap="addGroup">
+      <text class="add-group-icon">+</text>
+      <text class="add-group-text">添加分组</text>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-groups" wx:if="{{sop.groups.length === 0 && !isEdit}}">
+      <text class="empty-groups-text">暂无条目，点击编辑添加</text>
+    </view>
+  </view>
+
+  <!-- 查看模式：开始打勾 -->
+  <view class="bottom-action" wx:if="{{!isEdit}}">
+    <view class="start-btn {{sop.groups.length === 0 ? 'start-btn-disabled' : ''}}"
+          bindtap="startCheck">
+      <text class="start-btn-icon">✓</text>
+      <text class="start-btn-text">开始打勾</text>
+    </view>
+  </view>
+</view>

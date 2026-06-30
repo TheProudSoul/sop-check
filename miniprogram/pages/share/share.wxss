@@ -1,0 +1,234 @@
+/* ───────────────────────────────
+   分享页 · 他人SOP预览 + Fork
+   ─────────────────────────────── */
+
+.page {
+  min-height: 100vh;
+  background: #f7f8fc;
+  padding-bottom: 180rpx;
+}
+
+.hero {
+  background: linear-gradient(135deg, #1a1a2e 0%, #2d3561 100%);
+  padding: 36rpx 32rpx;
+  text-align: center;
+}
+
+.hero-label {
+  font-size: 28rpx;
+  color: rgba(255,255,255,0.7);
+}
+
+/* 信息卡 */
+.info-card {
+  margin: -16rpx 24rpx 0;
+  padding: 36rpx 28rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.info-emoji-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16rpx;
+}
+
+.emoji-box {
+  width: 100rpx;
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f0faf9, #e8f8f7);
+  border-radius: 24rpx;
+}
+
+.emoji-display {
+  font-size: 56rpx;
+}
+
+.info-title {
+  font-size: 38rpx;
+  font-weight: 700;
+  color: #2d3436;
+  text-align: center;
+  display: block;
+}
+
+.info-tag-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 12rpx;
+}
+
+.info-tag {
+  padding: 6rpx 20rpx;
+  background: #f0faf9;
+  border-radius: 16rpx;
+}
+
+.info-tag-text {
+  font-size: 24rpx;
+  color: #4ecdc4;
+  font-weight: 500;
+}
+
+.info-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24rpx;
+  gap: 0;
+}
+
+.info-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 36rpx;
+}
+
+.info-stat-num {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #4ecdc4;
+}
+
+.info-stat-label {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 4rpx;
+}
+
+.info-stat-divider {
+  width: 1rpx;
+  height: 48rpx;
+  background: #eee;
+}
+
+/* 分组 */
+.groups {
+  padding: 16rpx 24rpx 0;
+}
+
+.group {
+  margin-bottom: 16rpx;
+  overflow: hidden;
+}
+
+.group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18rpx 24rpx;
+  background: #fafbfc;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.group-head-left {
+  display: flex;
+  align-items: center;
+}
+
+.group-bar {
+  width: 6rpx;
+  height: 28rpx;
+  border-radius: 3rpx;
+  background: #4ecdc4;
+  margin-right: 12rpx;
+}
+
+.group-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2d3436;
+}
+
+.group-count {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 条目 */
+.item-row {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.item-row:last-child {
+  border-bottom: none;
+}
+
+.item-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.dot-must { background: #ff6b6b; }
+.dot-optional { background: #ffa726; }
+.dot-default { background: #ccc; }
+
+.item-name {
+  font-size: 28rpx;
+  color: #2d3436;
+  flex: 1;
+}
+
+.item-note {
+  font-size: 24rpx;
+  color: #999;
+  margin-left: 12rpx;
+  max-width: 300rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Fork栏 */
+.fork-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20rpx 32rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  box-shadow: 0 -2rpx 16rpx rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fork-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 28rpx;
+  background: linear-gradient(135deg, #4ecdc4, #3ab8b0);
+  border-radius: 48rpx;
+  box-shadow: 0 6rpx 20rpx rgba(78,205,196,0.35);
+}
+
+.fork-btn-icon {
+  font-size: 32rpx;
+  color: #fff;
+  margin-right: 8rpx;
+}
+
+.fork-btn-text {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #fff;
+}
+
+.fork-hint {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 12rpx;
+}

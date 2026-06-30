@@ -1,0 +1,99 @@
+<view class="page">
+  <!-- 进度区域 -->
+  <view class="progress-section">
+    <view class="progress-track">
+      <view class="progress-fill" style="width: {{progress}}%"/>
+    </view>
+    <view class="progress-info">
+      <view class="progress-left">
+        <text class="progress-emoji">{{sop.emoji || '📋'}}</text>
+        <text class="progress-title">{{sop.title}}</text>
+      </view>
+      <view class="progress-right">
+        <text class="progress-pct">{{progress}}%</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="stats-row">
+    <view class="stat-card card {{checkedCount === totalCount && totalCount > 0 ? 'stat-complete' : ''}}">
+      <text class="stat-big">{{checkedCount}}</text>
+      <text class="stat-sep">/</text>
+      <text class="stat-total">{{totalCount}}</text>
+      <text class="stat-unit">项已确认</text>
+    </view>
+    <view class="stat-card card stat-must-card" wx:if="{{uncheckedMust > 0}}">
+      <text class="stat-big stat-big-danger">{{uncheckedMust}}</text>
+      <text class="stat-unit">项必带未勾</text>
+    </view>
+  </view>
+
+  <!-- 分组列表 -->
+  <view class="groups">
+    <view class="group card" wx:for="{{checkGroups}}" wx:key="name" wx:for-index="gIdx">
+      <!-- 分组头 -->
+      <view class="group-head">
+        <view class="group-head-left">
+          <view class="group-indicator {{item.checked === item.items.length ? 'indicator-done' : ''}}"/>
+          <text class="group-name">{{item.name}}</text>
+        </view>
+        <text class="group-count {{item.checked === item.items.length ? 'count-done' : ''}}">{{item.checked}}/{{item.items.length}}</text>
+      </view>
+
+      <!-- 勾选项 -->
+      <view class="check-row {{sub.checked ? 'row-checked' : ''}} {{sub.priority === 'must' && !sub.checked ? 'row-must' : ''}}"
+            wx:for="{{item.items}}" wx:key="name" wx:for-item="sub" wx:for-index="iIdx"
+            bindtap="toggleItem" data-gidx="{{gIdx}}" data-iidx="{{iIdx}}"
+            hover-class="row-hover">
+        <!-- 复选框 -->
+        <view class="checkbox-wrap">
+          <view class="checkbox {{sub.checked ? 'cb-checked' : sub.priority === 'must' ? 'cb-must' : ''}}">
+            <view class="checkbox-inner" wx:if="{{sub.checked}}">
+              <text class="checkbox-tick">✓</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 内容 -->
+        <view class="check-body">
+          <text class="check-name {{sub.checked ? 'name-done' : ''}}">{{sub.name}}</text>
+          <text class="check-note" wx:if="{{sub.note && !sub.checked}}">{{sub.note}}</text>
+        </view>
+
+        <!-- 必带标记 -->
+        <view class="must-badge" wx:if="{{sub.priority === 'must' && !sub.checked}}">
+          <text class="must-badge-text">必</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-check" wx:if="{{totalCount === 0}}">
+    <text class="empty-check-icon">📋</text>
+    <text class="empty-check-text">这份SOP没有条目</text>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="bar-reset" bindtap="resetAll">
+      <text class="bar-reset-text">重置</text>
+    </view>
+    <view class="bar-finish {{progress === 100 ? '' : 'bar-finish-disabled'}}"
+          bindtap="{{progress === 100 ? 'finishCheck' : ''}}">
+      <text class="bar-finish-text">
+        {{progress === 100 ? '✓ 全部就绪！出发' : '还有 ' + (totalCount - checkedCount) + ' 项未确认'}}
+      </text>
+    </view>
+  </view>
+
+  <!-- 🎉 庆祝动画 -->
+  <view class="confetti-container" wx:if="{{showCelebration}}">
+    <view class="confetti c1">🎉</view>
+    <view class="confetti c2">⭐</view>
+    <view class="confetti c3">✨</view>
+    <view class="confetti c4">🎊</view>
+    <view class="confetti c5">💫</view>
+  </view>
+</view>
