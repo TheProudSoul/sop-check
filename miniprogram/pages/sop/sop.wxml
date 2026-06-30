@@ -11,7 +11,7 @@
     <view class="topbar-btn" bindtap="goBack"><text>← 返回</text></view>
     <text class="topbar-title">{{sop.title || 'SOP详情'}}</text>
     <view class="topbar-actions">
-      <view class="topbar-btn" bindtap="shareSop"><text class="color-primary">分享</text></view>
+      <view class="topbar-btn" bindtap="showSharePanel"><text class="color-primary">分享</text></view>
       <view class="topbar-btn" bindtap="editSop"><text class="color-primary">编辑</text></view>
       <view class="topbar-btn" bindtap="deleteSop"><text class="color-danger">删除</text></view>
     </view>
@@ -60,6 +60,12 @@
           <text class="info-stat-num">{{mustCount}}</text>
           <text class="info-stat-label">必带</text>
         </view>
+      </view>
+
+      <!-- Fork来源标签 -->
+      <view class="forked-tag" wx:if="{{!isEdit && sop.forked_from}}">
+        <text class="forked-tag-icon">⑂</text>
+        <text class="forked-tag-text">Fork来的</text>
       </view>
     </view>
   </view>
@@ -141,6 +147,29 @@
           bindtap="startCheck">
       <text class="start-btn-icon">✓</text>
       <text class="start-btn-text">开始打勾</text>
+    </view>
+  </view>
+
+  <!-- 分享半屏弹窗 -->
+  <view class="share-overlay" wx:if="{{showSharePanel}}" bindtap="hideSharePanel">
+    <view class="share-panel" catchtap="">
+      <text class="share-panel-title">分享SOP</text>
+      <view class="share-options">
+        <button class="share-option" open-type="share">
+          <text class="share-option-icon">💬</text>
+          <text class="share-option-label">发给微信好友</text>
+        </button>
+        <view class="share-option" bindtap="generatePoster">
+          <text class="share-option-icon">🖼️</text>
+          <text class="share-option-label">生成海报</text>
+        </view>
+      </view>
+      <view class="poster-wrap" wx:if="{{posterUrl}}">
+        <image class="poster-img" src="{{posterUrl}}" mode="widthFix" show-menu-by-longpress="{{true}}"/>
+        <text class="poster-hint">长按图片保存到相册</text>
+      </view>
+      <canvas canvas-id="posterCanvas" class="poster-canvas" wx:if="{{drawingPoster}}"/>
+      <text class="share-close" bindtap="hideSharePanel">关闭</text>
     </view>
   </view>
 </view>

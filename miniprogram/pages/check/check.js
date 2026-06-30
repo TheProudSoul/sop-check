@@ -149,5 +149,14 @@ Page({
     })
 
     setTimeout(() => wx.navigateBack(), 1500)
+  },
+
+  // 分享
+  onShareAppMessage() {
+    const sop = this.data.sop
+    return {
+      title: `${sop.emoji || '📋'} ${sop.title} — 打勾确认清单`,
+      path: `/pages/share/share?id=${sop._id}`,
+    }
   }
 })
