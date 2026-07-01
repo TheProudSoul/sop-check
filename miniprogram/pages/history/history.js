@@ -1,5 +1,5 @@
 const db = wx.cloud.database()
-const { formatDate, formatTime } = require('../../utils')
+const { formatDate, formatTime } = require('../../utils/index')
 
 Page({
   data: {

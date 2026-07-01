@@ -1,5 +1,5 @@
 const db = wx.cloud.database()
-const { deepClone } = require('../../utils')
+const { deepClone } = require('../../utils/index')
 const createPosterMixin = require('./sop-poster')
 
 // 默认分组模板
