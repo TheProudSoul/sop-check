@@ -83,6 +83,32 @@
   display: block;
 }
 
+.info-author-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  margin-top: 12rpx;
+}
+
+.info-author-avatar {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+}
+
+.info-author-avatar-placeholder {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  background: #e0e0e0;
+}
+
+.info-author-name {
+  font-size: 24rpx;
+  color: #636e72;
+}
+
 .info-tag-row {
   display: flex;
   justify-content: center;

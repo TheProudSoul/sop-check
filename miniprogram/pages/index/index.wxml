@@ -40,6 +40,11 @@
           <text class="sop-meta">{{totalItemCount(item)}} 项</text>
           <text class="sop-group-preview" wx:if="{{item.groupPreview}}">{{item.groupPreview}}</text>
         </view>
+        <view class="sop-author-row" wx:if="{{item.author_name}}">
+          <image class="sop-author-avatar" src="{{item.author_avatar || '/assets/default-avatar.png'}}" mode="aspectFill" wx:if="{{item.author_avatar}}"/>
+          <view class="sop-author-avatar-placeholder" wx:else/>
+          <text class="sop-author-name">{{item.author_name === (userInfo.nickname || '勾友') ? '我' : item.author_name}}</text>
+        </view>
         <text class="sop-time" wx:if="{{item.timeAgo}}">{{item.timeAgo}}</text>
       </view>
       <view class="sop-card-right">

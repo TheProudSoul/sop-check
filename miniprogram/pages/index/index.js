@@ -6,6 +6,7 @@ Page({
     filteredSops: [],
     searchText: '',
     activeTab: 'mine',
+    userInfo: null,
   },
 
   onLoad() {
@@ -13,9 +14,12 @@ Page({
   },
 
   onShow() {
-    if (getApp().globalData.sopNeedsRefresh) {
+    // 刷新用户信息
+    const app = getApp()
+    this.setData({ userInfo: app.globalData.userInfo || null })
+    if (app.globalData.sopNeedsRefresh) {
       this.loadSops()
-      getApp().globalData.sopNeedsRefresh = false
+      app.globalData.sopNeedsRefresh = false
     }
   },
 
@@ -29,11 +33,14 @@ Page({
         .where({ _openid: '{openid}' })
         .orderBy('updated_at', 'desc')
         .get()
-      // 给每个 sop 加 timeAgo 和 groupPreview
+      // 给每个 sop 加 timeAgo、groupPreview 和 author 信息
+      const currentUser = getApp().globalData.userInfo
       const enriched = data.map(sop => ({
         ...sop,
         timeAgo: this.formatTimeAgo(sop.updated_at || sop.created_at),
         groupPreview: this.buildGroupPreview(sop.groups),
+        author_name: sop.author_name || (currentUser ? currentUser.nickname : '勾友'),
+        author_avatar: sop.author_avatar || (currentUser ? currentUser.avatar_url : ''),
       }))
       this.setData({ sops: enriched })
       this.filterByTab()

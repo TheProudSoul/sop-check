@@ -76,6 +76,8 @@ Page({
           groups: true,
           _id: true,
           updated_at: true,
+          author_name: true,
+          author_avatar: true,
         })
         .get()
 

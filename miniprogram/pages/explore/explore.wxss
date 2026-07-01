@@ -162,6 +162,31 @@
   color: #636e72;
 }
 
+.sop-author-row {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-top: 8rpx;
+}
+
+.sop-author-avatar {
+  width: 28rpx;
+  height: 28rpx;
+  border-radius: 50%;
+}
+
+.sop-author-avatar-placeholder {
+  width: 28rpx;
+  height: 28rpx;
+  border-radius: 50%;
+  background: #e0e0e0;
+}
+
+.sop-author-name {
+  font-size: 22rpx;
+  color: #999;
+}
+
 .sop-fork-count {
   display: flex;
   flex-direction: column;

@@ -12,6 +12,11 @@
       </view>
     </view>
     <text class="info-title">{{sop.title}}</text>
+    <view class="info-author-row" wx:if="{{sop.author_name}}">
+      <image class="info-author-avatar" src="{{sop.author_avatar}}" mode="aspectFill" wx:if="{{sop.author_avatar}}"/>
+      <view class="info-author-avatar-placeholder" wx:else/>
+      <text class="info-author-name">{{sop.author_name}}</text>
+    </view>
     <view class="info-tag-row">
       <view class="info-tag">
         <text class="info-tag-text">{{sop.category || '未分类'}}</text>

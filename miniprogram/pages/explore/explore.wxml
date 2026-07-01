@@ -41,6 +41,11 @@
           </view>
           <text class="sop-meta">{{item.itemCount}} 项</text>
         </view>
+        <view class="sop-author-row" wx:if="{{item.author_name}}">
+          <image class="sop-author-avatar" src="{{item.author_avatar}}" mode="aspectFill" wx:if="{{item.author_avatar}}"/>
+          <view class="sop-author-avatar-placeholder" wx:else/>
+          <text class="sop-author-name">{{item.author_name}}</text>
+        </view>
       </view>
       <view class="sop-fork-count">
         <text class="fork-icon">⑂</text>

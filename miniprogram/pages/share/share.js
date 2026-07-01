@@ -55,6 +55,7 @@ Page({
     const now = new Date().toISOString()
 
     // 深拷贝，去掉_id和云数据库元字段
+    const currentUser = getApp().globalData.userInfo
     const forked = {
       title: original.title,
       category: original.category,
@@ -63,6 +64,9 @@ Page({
       forked_from: original._id,
       is_public: true,
       fork_count: 0,
+      author_id: currentUser ? currentUser._id : '',
+      author_name: currentUser ? currentUser.nickname : '勾友',
+      author_avatar: currentUser ? currentUser.avatar_url : '',
       created_at: now,
       updated_at: now,
     }
@@ -74,6 +78,19 @@ Page({
         await db.collection('sops').doc(original._id).update({
           data: { fork_count: db.command.inc(1) }
         })
+      } catch (e) { /* ignore */ }
+
+      // 更新用户的 fork_count +1
+      try {
+        const userRes = await db.collection('users')
+          .where({ _openid: '{openid}' })
+          .limit(1)
+          .get()
+        if (userRes.data.length > 0) {
+          await db.collection('users').doc(userRes.data[0]._id).update({
+            data: { fork_count: db.command.inc(1) }
+          })
+        }
       } catch (e) { /* ignore */ }
 
       wx.vibrateShort()

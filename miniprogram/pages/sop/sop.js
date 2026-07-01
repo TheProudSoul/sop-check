@@ -131,6 +131,11 @@ Page(Object.assign({
       if (this.data.isNew) {
         sop.created_at = now
         sop.is_public = sop.is_public !== undefined ? sop.is_public : true
+        // 添加作者信息
+        const currentUser = getApp().globalData.userInfo
+        sop.author_id = currentUser ? currentUser._id : ''
+        sop.author_name = currentUser ? currentUser.nickname : '勾友'
+        sop.author_avatar = currentUser ? currentUser.avatar_url : ''
         const { _id } = await db.collection('sops').add({ data: sop })
         sop._id = _id
         this.setData({ isNew: false, isEdit: false, sop })

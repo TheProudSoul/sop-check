@@ -3,6 +3,7 @@
     "pages/index/index",
     "pages/explore/explore",
     "pages/history/history",
+    "pages/profile/profile",
     "pages/sop/sop",
     "pages/check/check",
     "pages/share/share"
@@ -37,6 +38,12 @@
         "text": "历史",
         "iconPath": "assets/tab-history.png",
         "selectedIconPath": "assets/tab-history-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/tab-profile.png",
+        "selectedIconPath": "assets/tab-profile-active.png"
       }
     ]
   },

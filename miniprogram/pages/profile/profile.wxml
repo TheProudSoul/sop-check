@@ -1,0 +1,108 @@
+<view class="container">
+  <!-- 顶部个人卡片 -->
+  <view class="profile-header header-curved">
+    <view class="profile-avatar-wrap" wx:if="{{userInfo}}">
+      <image class="profile-avatar" src="{{userInfo.avatar_url || '/assets/default-avatar.png'}}" mode="aspectFill"/>
+    </view>
+    <view class="profile-avatar-wrap" wx:else>
+      <view class="profile-avatar-placeholder">
+        <text class="profile-avatar-emoji">😊</text>
+      </view>
+    </view>
+    <text class="profile-nickname">{{userInfo.nickname || '勾友'}}</text>
+    <text class="profile-bio" bindtap="showEdit">{{userInfo.bio || '点击编辑简介'}}</text>
+    <view class="profile-edit-link" bindtap="showEdit">
+      <text class="profile-edit-text">编辑资料</text>
+    </view>
+  </view>
+
+  <!-- 数据统计 -->
+  <view class="stats-row" wx:if="{{!loading}}">
+    <view class="stat-card">
+      <text class="stat-num">{{sopCount}}</text>
+      <text class="stat-label">创建</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">{{forkCount}}</text>
+      <text class="stat-label">Fork</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">{{usageCount}}</text>
+      <text class="stat-label">使用</text>
+    </view>
+  </view>
+
+  <!-- 菜单列表 -->
+  <view class="menu-list" wx:if="{{!loading}}">
+    <view class="menu-item hover-scale" bindtap="goToMySops">
+      <view class="menu-left">
+        <text class="menu-icon">📋</text>
+        <text class="menu-label">我的SOP</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item hover-scale" bindtap="goToHistory">
+      <view class="menu-left">
+        <text class="menu-icon">🕐</text>
+        <text class="menu-label">使用历史</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item hover-scale" bindtap="showAbout">
+      <view class="menu-left">
+        <text class="menu-icon">🎯</text>
+        <text class="menu-label">关于勾GO</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-state" wx:if="{{loading}}">
+    <view class="loading-spinner"/>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 编辑资料半屏弹窗 -->
+  <view class="edit-mask" wx:if="{{showEditPanel}}" bindtap="hideEdit" catchtouchmove="true"/>
+  <view class="edit-panel {{showEditPanel ? 'edit-panel-show' : ''}}" catchtouchmove="true">
+    <view class="edit-panel-header">
+      <text class="edit-panel-title">编辑资料</text>
+      <view class="edit-panel-close" bindtap="hideEdit">
+        <text class="edit-panel-close-text">✕</text>
+      </view>
+    </view>
+
+    <view class="edit-panel-body">
+      <!-- 头像选择 -->
+      <view class="edit-avatar-section">
+        <button class="edit-avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+          <image class="edit-avatar-img" src="{{tempAvatarUrl || '/assets/default-avatar.png'}}" mode="aspectFill" wx:if="{{tempAvatarUrl}}"/>
+          <view class="edit-avatar-placeholder" wx:else>
+            <text class="edit-avatar-emoji">😊</text>
+          </view>
+          <view class="edit-avatar-badge">
+            <text class="edit-avatar-badge-text">换</text>
+          </view>
+        </button>
+      </view>
+
+      <!-- 昵称 -->
+      <view class="edit-field">
+        <text class="edit-field-label">昵称</text>
+        <input class="edit-field-input" type="nickname" placeholder="输入昵称" value="{{tempNickname}}" bindinput="onNicknameInput" bindblur="onNicknameBlur"/>
+      </view>
+
+      <!-- 简介 -->
+      <view class="edit-field">
+        <text class="edit-field-label">简介</text>
+        <textarea class="edit-field-textarea" placeholder="写一句话介绍自己" maxlength="50" value="{{tempBio}}" bindinput="onBioInput"/>
+      </view>
+
+      <!-- 保存 -->
+      <view class="edit-save-btn" bindtap="saveProfile">
+        <text class="edit-save-btn-text">保存</text>
+      </view>
+    </view>
+  </view>
+</view>
