@@ -1,6 +1,6 @@
 <view class="page">
   <!-- 进度区域 -->
-  <view class="progress-section">
+  <view class="progress-section header-curved">
     <view class="progress-track">
       <view class="progress-fill" style="width: {{progress}}%"/>
     </view>
@@ -75,28 +75,31 @@
     <text class="empty-check-text">这份SOP没有条目</text>
   </view>
 
-  <!-- 底部操作栏 -->
+  <!-- 底部操作栏 — 重设计 -->
   <view class="bottom-bar">
-    <view class="bar-reset" bindtap="resetAll">
-      <text class="bar-reset-text">重置</text>
+    <view class="bar-icon-btn" bindtap="resetAll">
+      <text class="bar-icon-text">🔄</text>
     </view>
-    <button class="bar-share" open-type="share">
-      <text class="bar-share-text">分享</text>
+    <button class="bar-icon-btn" open-type="share">
+      <text class="bar-icon-text">📤</text>
     </button>
     <view class="bar-finish {{progress === 100 ? '' : 'bar-finish-disabled'}}"
           bindtap="{{progress === 100 ? 'finishCheck' : ''}}">
       <text class="bar-finish-text">
-        {{progress === 100 ? '✓ 全部就绪！出发' : '还有 ' + (totalCount - checkedCount) + ' 项未确认'}}
+        {{progress === 100 ? '🚀 全部就绪！出发' : '还有 ' + (totalCount - checkedCount) + ' 项未确认'}}
       </text>
     </view>
   </view>
 
-  <!-- 🎉 庆祝动画 -->
+  <!-- 🎉 庆祝动画 — 8个元素 -->
   <view class="confetti-container" wx:if="{{showCelebration}}">
     <view class="confetti c1">🎉</view>
     <view class="confetti c2">⭐</view>
     <view class="confetti c3">✨</view>
     <view class="confetti c4">🎊</view>
     <view class="confetti c5">💫</view>
+    <view class="confetti c6">🌟</view>
+    <view class="confetti c7">🎯</view>
+    <view class="confetti c8">🏆</view>
   </view>
 </view>

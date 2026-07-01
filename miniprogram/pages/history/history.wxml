@@ -1,21 +1,24 @@
 <view class="container">
   <!-- 顶部 -->
-  <view class="header">
+  <view class="header header-curved">
     <text class="title">使用历史</text>
     <text class="subtitle">回顾每一次打勾</text>
   </view>
 
-  <!-- 统计概览 -->
+  <!-- 统计概览 — 带图标和渐变 -->
   <view class="stats-row" wx:if="{{stats.totalCount > 0}}">
-    <view class="stat-card card">
+    <view class="stat-card card stat-card-blue">
+      <text class="stat-icon">📊</text>
       <text class="stat-num">{{stats.totalCount}}</text>
       <text class="stat-label">总使用次数</text>
     </view>
-    <view class="stat-card card" wx:if="{{stats.topSop}}">
+    <view class="stat-card card stat-card-orange" wx:if="{{stats.topSop}}">
+      <text class="stat-icon">🔥</text>
       <text class="stat-sop-name">{{stats.topSop}}</text>
       <text class="stat-label">最常使用</text>
     </view>
-    <view class="stat-card card">
+    <view class="stat-card card stat-card-green">
+      <text class="stat-icon">🎯</text>
       <text class="stat-num">{{stats.avgRate}}%</text>
       <text class="stat-label">平均完成率</text>
     </view>
@@ -59,7 +62,9 @@
 
   <!-- 空状态 -->
   <view class="empty" wx:if="{{!loading && groupedUsages.length === 0}}">
-    <text class="empty-icon">📊</text>
+    <view class="empty-circle">
+      <text class="empty-icon">📊</text>
+    </view>
     <text class="empty-text">还没有使用记录</text>
     <text class="empty-hint">完成一次SOP打勾后就会出现在这里</text>
   </view>

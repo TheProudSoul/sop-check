@@ -1,5 +1,5 @@
 <view class="page">
-  <!-- 顶部 -->
+  <!-- 顶部 hero — 装饰性背景 -->
   <view class="hero">
     <text class="hero-label">来自朋友的SOP</text>
   </view>
@@ -55,5 +55,8 @@
       <text class="fork-btn-text">Fork到我名下</text>
     </view>
     <text class="fork-hint">复制一份到你的SOP库，可以自由修改</text>
+    <view class="fork-create-link" bindtap="goCreate">
+      <text class="fork-create-text">或创建你自己的SOP →</text>
+    </view>
   </view>
 </view>

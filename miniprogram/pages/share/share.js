@@ -93,6 +93,10 @@ Page({
     }
   },
 
+  goCreate() {
+    wx.reLaunch({ url: '/pages/index/index' })
+  },
+
   onShareAppMessage() {
     return {
       title: `${this.data.sop.emoji || '📋'} ${this.data.sop.title}`,

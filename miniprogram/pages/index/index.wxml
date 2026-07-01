@@ -1,8 +1,9 @@
 <view class="container">
   <!-- 顶部状态栏 -->
-  <view class="header">
+  <view class="header header-curved">
     <text class="title">勾GO</text>
     <text class="subtitle">勾完再走</text>
+    <view class="slogan-line"/>
   </view>
 
   <!-- 搜索栏 -->
@@ -23,9 +24,9 @@
 
   <!-- SOP列表 -->
   <view class="sop-list" wx:if="{{filteredSops.length > 0}}">
-    <view class="sop-card" wx:for="{{filteredSops}}" wx:key="_id" bindtap="goToSop" data-id="{{item._id}}">
+    <view class="sop-card hover-scale animate-in" wx:for="{{filteredSops}}" wx:key="_id" bindtap="goToSop" data-id="{{item._id}}">
       <view class="sop-card-left">
-        <view class="sop-emoji">{{item.emoji || '📋'}}</view>
+        <view class="sop-emoji sop-emoji-{{item.priority || 'default'}}">{{item.emoji || '📋'}}</view>
       </view>
       <view class="sop-card-body">
         <view class="sop-name-row">
@@ -35,11 +36,15 @@
             <text class="forked-badge-text">Fork</text>
           </view>
         </view>
-        <text class="sop-meta">{{totalItemCount(item)}} 项 · {{item.category || '未分类'}}</text>
+        <view class="sop-sub-row">
+          <text class="sop-meta">{{totalItemCount(item)}} 项</text>
+          <text class="sop-group-preview" wx:if="{{item.groupPreview}}">{{item.groupPreview}}</text>
+        </view>
+        <text class="sop-time" wx:if="{{item.timeAgo}}">{{item.timeAgo}}</text>
       </view>
       <view class="sop-card-right">
         <view class="sop-use-btn" catchtap="startCheck" data-id="{{item._id}}">
-          <text>打勾</text>
+          <text class="sop-use-icon">✓</text>
         </view>
       </view>
     </view>
@@ -47,13 +52,17 @@
 
   <!-- 空状态 -->
   <view class="empty" wx:if="{{filteredSops.length === 0 && !searchText && activeTab === 'mine'}}">
-    <text class="empty-icon">📦</text>
+    <view class="empty-circle">
+      <text class="empty-icon">📦</text>
+    </view>
     <text class="empty-text">还没有SOP</text>
     <text class="empty-hint">点击下方 + 创建第一份</text>
   </view>
 
   <view class="empty" wx:if="{{filteredSops.length === 0 && !searchText && activeTab === 'forked'}}">
-    <text class="empty-icon">⑂</text>
+    <view class="empty-circle">
+      <text class="empty-icon">⑂</text>
+    </view>
     <text class="empty-text">还没有Fork来的SOP</text>
     <text class="empty-hint">让朋友分享一份SOP给你</text>
   </view>

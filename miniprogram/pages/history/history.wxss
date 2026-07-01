@@ -22,7 +22,7 @@
   display: block;
 }
 
-/* 统计概览 */
+/* 统计概览 — 带渐变底色 */
 .stats-row {
   display: flex;
   gap: 16rpx;
@@ -35,6 +35,23 @@
   flex-direction: column;
   align-items: center;
   padding: 24rpx 16rpx;
+}
+
+.stat-card-blue {
+  background: linear-gradient(135deg, #e8f0fe, #d2e3fc);
+}
+
+.stat-card-orange {
+  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+}
+
+.stat-card-green {
+  background: linear-gradient(135deg, #e6f8f7, #d0f0ed);
+}
+
+.stat-icon {
+  font-size: 36rpx;
+  margin-bottom: 8rpx;
 }
 
 .stat-num {
@@ -118,7 +135,7 @@
   height: 72rpx;
   line-height: 72rpx;
   text-align: center;
-  background: #f0f7f7;
+  background: linear-gradient(135deg, #f0faf9, #e8f8f7);
   border-radius: 14rpx;
   margin-right: 20rpx;
   flex-shrink: 0;
@@ -179,9 +196,14 @@
 
 .rate-fill {
   height: 100%;
-  background: #4ecdc4;
+  background: linear-gradient(90deg, #4ecdc4, #a8edea);
   border-radius: 4rpx;
   transition: width 0.3s;
+  animation: barGrow 0.6s ease-out;
+}
+
+@keyframes barGrow {
+  from { width: 0 !important; }
 }
 
 .usage-check {
@@ -209,9 +231,19 @@
   padding-top: 160rpx;
 }
 
+.empty-circle {
+  width: 160rpx;
+  height: 160rpx;
+  border: 4rpx dashed #e0e0e0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16rpx;
+}
+
 .empty-icon {
-  font-size: 80rpx;
-  margin-bottom: 24rpx;
+  font-size: 64rpx;
 }
 
 .empty-text {

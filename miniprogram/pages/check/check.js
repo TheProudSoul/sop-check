@@ -64,6 +64,9 @@ Page({
     const current = this.data.checkGroups[gidx].items[iidx].checked
     const key = `checkGroups[${gidx}].items[${iidx}].checked`
 
+    // 轻振动反馈
+    wx.vibrateShort({ type: 'light' })
+
     this.setData({ [key]: !current }, () => this.updateProgress())
   },
 

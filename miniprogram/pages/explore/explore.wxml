@@ -1,6 +1,6 @@
 <view class="container">
   <!-- 顶部 -->
-  <view class="header">
+  <view class="header header-curved">
     <text class="title">广场</text>
     <text class="subtitle">发现大家分享的SOP清单</text>
   </view>
@@ -14,10 +14,10 @@
     </view>
   </view>
 
-  <!-- 分类横滚 -->
+  <!-- 分类横滚 pill -->
   <scroll-view class="categories" scroll-x enable-flex>
     <view
-      class="cat-item {{activeCategory === item.key ? 'cat-active' : ''}}"
+      class="cat-pill {{activeCategory === item.key ? 'cat-active' : ''}}"
       wx:for="{{categories}}"
       wx:key="key"
       bindtap="switchCategory"
@@ -29,8 +29,10 @@
 
   <!-- SOP列表 -->
   <view class="sop-list" wx:if="{{sops.length > 0}}">
-    <view class="sop-card" wx:for="{{sops}}" wx:key="_id" bindtap="goToShare" data-id="{{item._id}}">
-      <view class="sop-emoji">{{item.emoji || '📋'}}</view>
+    <view class="sop-card hover-scale animate-in" wx:for="{{sops}}" wx:key="_id" bindtap="goToShare" data-id="{{item._id}}">
+      <view class="sop-emoji-wrap">
+        <text class="sop-emoji">{{item.emoji || '📋'}}</text>
+      </view>
       <view class="sop-body">
         <text class="sop-name">{{item.title}}</text>
         <view class="sop-meta-row">
@@ -55,21 +57,27 @@
 
   <!-- 空状态 - 无数据 -->
   <view class="empty" wx:if="{{!loading && sops.length === 0 && !searchText && activeCategory === 'all'}}">
-    <text class="empty-icon">🌍</text>
+    <view class="empty-circle">
+      <text class="empty-icon">🌍</text>
+    </view>
     <text class="empty-text">广场还是空的</text>
     <text class="empty-hint">成为第一个分享SOP的人吧</text>
   </view>
 
   <!-- 空状态 - 搜索无结果 -->
   <view class="empty" wx:if="{{!loading && sops.length === 0 && searchText}}">
-    <text class="empty-icon">🔍</text>
+    <view class="empty-circle">
+      <text class="empty-icon">🔍</text>
+    </view>
     <text class="empty-text">没找到"{{searchText}}"相关的SOP</text>
     <text class="empty-hint">换个关键词试试</text>
   </view>
 
   <!-- 空状态 - 分类无结果 -->
   <view class="empty" wx:if="{{!loading && sops.length === 0 && !searchText && activeCategory !== 'all'}}">
-    <text class="empty-icon">📂</text>
+    <view class="empty-circle">
+      <text class="empty-icon">📂</text>
+    </view>
     <text class="empty-text">该分类暂无SOP</text>
     <text class="empty-hint">去看看其他分类</text>
   </view>
@@ -78,5 +86,11 @@
   <view class="load-more" wx:if="{{sops.length > 0}}">
     <text class="load-more-text" wx:if="{{loading}}">加载中...</text>
     <text class="load-more-text" wx:elif="{{!hasMore}}">— 已经到底了 —</text>
+  </view>
+
+  <!-- 分享引导 banner -->
+  <view class="share-banner" wx:if="{{sops.length > 0}}">
+    <text class="share-banner-icon">💡</text>
+    <text class="share-banner-text">分享你的SOP，帮助更多人</text>
   </view>
 </view>

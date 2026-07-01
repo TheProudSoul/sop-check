@@ -29,14 +29,49 @@ Page({
         .where({ _openid: '{openid}' })
         .orderBy('updated_at', 'desc')
         .get()
-      this.setData({ sops: data })
+      // 给每个 sop 加 timeAgo 和 groupPreview
+      const enriched = data.map(sop => ({
+        ...sop,
+        timeAgo: this.formatTimeAgo(sop.updated_at || sop.created_at),
+        groupPreview: this.buildGroupPreview(sop.groups),
+      }))
+      this.setData({ sops: enriched })
       this.filterByTab()
     } catch (e) {
       console.error('加载SOP失败', e)
       const local = wx.getStorageSync('sops') || []
-      this.setData({ sops: local })
+      const enriched = local.map(sop => ({
+        ...sop,
+        timeAgo: this.formatTimeAgo(sop.updated_at || sop.created_at),
+        groupPreview: this.buildGroupPreview(sop.groups),
+      }))
+      this.setData({ sops: enriched })
       this.filterByTab()
     }
+  },
+
+  formatTimeAgo(dateStr) {
+    if (!dateStr) return ''
+    const now = Date.now()
+    const then = new Date(dateStr).getTime()
+    if (isNaN(then)) return ''
+    const diff = now - then
+    const minutes = Math.floor(diff / 60000)
+    if (minutes < 1) return '刚刚'
+    if (minutes < 60) return minutes + '分钟前'
+    const hours = Math.floor(minutes / 60)
+    if (hours < 24) return hours + '小时前'
+    const days = Math.floor(hours / 24)
+    if (days < 30) return days + '天前'
+    const months = Math.floor(days / 30)
+    if (months < 12) return months + '个月前'
+    return Math.floor(months / 12) + '年前'
+  },
+
+  buildGroupPreview(groups) {
+    if (!groups || groups.length === 0) return ''
+    const names = groups.slice(0, 2).map(g => g.name || '未命名').join(' · ')
+    return groups.length > 2 ? names + ' ...' : names
   },
 
   filterByTab() {

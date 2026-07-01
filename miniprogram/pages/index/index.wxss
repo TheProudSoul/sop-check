@@ -7,6 +7,7 @@
   padding: 60rpx 40rpx 30rpx;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   color: #fff;
+  position: relative;
 }
 
 .title {
@@ -20,6 +21,19 @@
   color: rgba(255,255,255,0.7);
   margin-top: 8rpx;
   display: block;
+}
+
+/* Slogan 细线动画 */
+.slogan-line {
+  margin-top: 16rpx;
+  height: 2rpx;
+  background: linear-gradient(90deg, transparent, #4ecdc4, transparent);
+  animation: sloganGlow 3s ease-in-out infinite;
+}
+
+@keyframes sloganGlow {
+  0%, 100% { opacity: 0.4; transform: scaleX(0.6); }
+  50% { opacity: 1; transform: scaleX(1); }
 }
 
 .search-bar {
@@ -77,6 +91,11 @@
   background: #fff;
   border-radius: 20rpx;
   box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.05);
+  transition: transform 0.15s ease;
+}
+
+.sop-card:active {
+  transform: scale(0.98);
 }
 
 .sop-card-left {
@@ -89,8 +108,18 @@
   height: 80rpx;
   line-height: 80rpx;
   text-align: center;
-  background: #f0f7f7;
   border-radius: 16rpx;
+}
+
+/* 不同优先级的渐变背景 */
+.sop-emoji-default {
+  background: linear-gradient(135deg, #f0f7f7, #e0f0ef);
+}
+.sop-emoji-must {
+  background: linear-gradient(135deg, #fff0f0, #ffe0e0);
+}
+.sop-emoji-optional {
+  background: linear-gradient(135deg, #fff8e0, #ffefc0);
 }
 
 .sop-card-body {
@@ -129,10 +158,31 @@
   font-weight: 500;
 }
 
+.sop-sub-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-top: 6rpx;
+}
+
 .sop-meta {
   font-size: 24rpx;
   color: #636e72;
-  margin-top: 6rpx;
+}
+
+.sop-group-preview {
+  font-size: 22rpx;
+  color: #4ecdc4;
+  padding: 2rpx 14rpx;
+  background: #f0faf9;
+  border-radius: 16rpx;
+  font-weight: 500;
+}
+
+.sop-time {
+  font-size: 22rpx;
+  color: #bbb;
+  margin-top: 4rpx;
   display: block;
 }
 
@@ -140,15 +190,30 @@
   margin-left: 16rpx;
 }
 
+/* 圆形打勾按钮 */
 .sop-use-btn {
-  padding: 12rpx 28rpx;
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
   background: #4ecdc4;
-  color: #fff;
-  border-radius: 30rpx;
-  font-size: 26rpx;
-  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(78,205,196,0.3);
+  transition: transform 0.15s ease;
 }
 
+.sop-use-btn:active {
+  transform: scale(0.9);
+}
+
+.sop-use-icon {
+  font-size: 32rpx;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* 空状态 */
 .empty {
   display: flex;
   flex-direction: column;
@@ -156,9 +221,19 @@
   padding-top: 160rpx;
 }
 
+.empty-circle {
+  width: 160rpx;
+  height: 160rpx;
+  border: 4rpx dashed #e0e0e0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16rpx;
+}
+
 .empty-icon {
-  font-size: 80rpx;
-  margin-bottom: 24rpx;
+  font-size: 64rpx;
 }
 
 .empty-text {
@@ -172,6 +247,7 @@
   margin-top: 12rpx;
 }
 
+/* FAB 按钮 */
 .fab {
   position: fixed;
   right: 40rpx;
@@ -186,4 +262,10 @@
   font-weight: 300;
   border-radius: 50%;
   box-shadow: 0 8rpx 24rpx rgba(78,205,196,0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 8rpx 24rpx rgba(78,205,196,0.4); }
+  50% { box-shadow: 0 8rpx 40rpx rgba(78,205,196,0.6); }
 }

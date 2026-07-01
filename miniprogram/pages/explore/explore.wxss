@@ -55,13 +55,13 @@
   color: #999;
 }
 
-/* 分类横滚 */
+/* 分类横滚 pill */
 .categories {
   white-space: nowrap;
   padding: 0 32rpx 16rpx;
 }
 
-.cat-item {
+.cat-pill {
   display: inline-block;
   padding: 14rpx 28rpx;
   margin-right: 16rpx;
@@ -100,6 +100,16 @@
   background: #fff;
   border-radius: 20rpx;
   box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.05);
+  transition: transform 0.15s ease;
+}
+
+.sop-card:active {
+  transform: scale(0.98);
+}
+
+.sop-emoji-wrap {
+  margin-right: 20rpx;
+  flex-shrink: 0;
 }
 
 .sop-emoji {
@@ -108,10 +118,9 @@
   height: 80rpx;
   line-height: 80rpx;
   text-align: center;
-  background: #f0f7f7;
+  background: linear-gradient(135deg, #f0faf9, #e8f8f7);
   border-radius: 16rpx;
-  margin-right: 20rpx;
-  flex-shrink: 0;
+  display: block;
 }
 
 .sop-body {
@@ -208,9 +217,19 @@
   padding-top: 160rpx;
 }
 
+.empty-circle {
+  width: 160rpx;
+  height: 160rpx;
+  border: 4rpx dashed #e0e0e0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16rpx;
+}
+
 .empty-icon {
-  font-size: 80rpx;
-  margin-bottom: 24rpx;
+  font-size: 64rpx;
 }
 
 .empty-text {
@@ -233,4 +252,27 @@
 .load-more-text {
   font-size: 24rpx;
   color: #999;
+}
+
+/* 分享引导 banner */
+.share-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  margin: 24rpx 32rpx;
+  padding: 24rpx;
+  background: linear-gradient(135deg, #f0faf9, #e8f8f7);
+  border-radius: 20rpx;
+  border: 2rpx dashed #4ecdc4;
+}
+
+.share-banner-icon {
+  font-size: 32rpx;
+}
+
+.share-banner-text {
+  font-size: 26rpx;
+  color: #4ecdc4;
+  font-weight: 500;
 }

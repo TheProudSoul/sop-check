@@ -1,19 +1,19 @@
 <view class="page">
   <!-- 编辑模式顶栏 -->
   <view class="topbar" wx:if="{{isEdit}}">
-    <view class="topbar-btn" bindtap="cancelEdit"><text>取消</text></view>
-    <text class="topbar-title">{{isNew ? '新建SOP' : '编辑SOP'}}</text>
-    <view class="topbar-btn topbar-save" bindtap="saveSop"><text>保存</text></view>
+    <view class="topbar-btn hover-scale" bindtap="cancelEdit"><text>← 取消</text></view>
+    <text class="topbar-title">{{isNew ? '📝 新建SOP' : '📝 编辑SOP'}}</text>
+    <view class="topbar-btn topbar-save hover-scale" bindtap="saveSop"><text>💾 保存</text></view>
   </view>
 
   <!-- 查看模式顶栏 -->
   <view class="topbar" wx:if="{{!isEdit}}">
-    <view class="topbar-btn" bindtap="goBack"><text>← 返回</text></view>
+    <view class="topbar-btn hover-scale" bindtap="goBack"><text>← 返回</text></view>
     <text class="topbar-title">{{sop.title || 'SOP详情'}}</text>
     <view class="topbar-actions">
-      <view class="topbar-btn" bindtap="showSharePanel"><text class="color-primary">分享</text></view>
-      <view class="topbar-btn" bindtap="editSop"><text class="color-primary">编辑</text></view>
-      <view class="topbar-btn" bindtap="deleteSop"><text class="color-danger">删除</text></view>
+      <view class="topbar-btn hover-scale" bindtap="showSharePanel"><text class="color-primary">🔗 分享</text></view>
+      <view class="topbar-btn hover-scale" bindtap="editSop"><text class="color-primary">📝 编辑</text></view>
+      <view class="topbar-btn hover-scale" bindtap="deleteSop"><text class="color-danger">🗑️ 删除</text></view>
     </view>
   </view>
 
@@ -44,21 +44,19 @@
         </text>
       </view>
 
-      <!-- 查看模式统计 -->
-      <view class="info-stats" wx:if="{{!isEdit}}">
-        <view class="info-stat">
-          <text class="info-stat-num">{{groupCount}}</text>
-          <text class="info-stat-label">分组</text>
+      <!-- 查看模式统计 — 三个圆角卡片 -->
+      <view class="info-stats-cards" wx:if="{{!isEdit}}">
+        <view class="stat-mini-card stat-mini-blue">
+          <text class="stat-mini-num">{{groupCount}}</text>
+          <text class="stat-mini-label">分组</text>
         </view>
-        <view class="info-stat-divider"/>
-        <view class="info-stat">
-          <text class="info-stat-num">{{itemCount}}</text>
-          <text class="info-stat-label">条目</text>
+        <view class="stat-mini-card stat-mini-green">
+          <text class="stat-mini-num">{{itemCount}}</text>
+          <text class="stat-mini-label">条目</text>
         </view>
-        <view class="info-stat-divider"/>
-        <view class="info-stat">
-          <text class="info-stat-num">{{mustCount}}</text>
-          <text class="info-stat-label">必带</text>
+        <view class="stat-mini-card stat-mini-red">
+          <text class="stat-mini-num">{{mustCount}}</text>
+          <text class="stat-mini-label">必带</text>
         </view>
       </view>
 
@@ -80,7 +78,7 @@
 
   <!-- 分组列表 -->
   <view class="groups">
-    <view class="group card" wx:for="{{sop.groups}}" wx:key="name" wx:for-index="gIdx" wx:for-item="group">
+    <view class="group card group-color-{{gIdx % 3}}" wx:for="{{sop.groups}}" wx:key="name" wx:for-index="gIdx" wx:for-item="group">
       <view class="group-head">
         <view class="group-head-left">
           <view class="group-bar"/>
@@ -131,15 +129,16 @@
         </view>
       </view>
 
-      <!-- 添加条目 -->
+      <!-- 添加条目 — 虚线边框 + 图标 -->
       <view class="add-item-btn" wx:if="{{isEdit}}" bindtap="addItem" data-gidx="{{gIdx}}">
-        <text class="add-item-text">+ 添加条目</text>
+        <text class="add-item-icon">＋</text>
+        <text class="add-item-text">添加条目</text>
       </view>
     </view>
 
-    <!-- 添加分组 -->
+    <!-- 添加分组 — 虚线边框 + 图标 -->
     <view class="add-group-btn card" wx:if="{{isEdit}}" bindtap="addGroup">
-      <text class="add-group-icon">+</text>
+      <text class="add-group-icon">＋</text>
       <text class="add-group-text">添加分组</text>
     </view>
 
