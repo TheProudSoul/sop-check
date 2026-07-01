@@ -1,9 +1,5 @@
 const db = wx.cloud.database()
-
-// 深拷贝
-function deepClone(obj) {
-  return JSON.parse(JSON.stringify(obj))
-}
+const { deepClone } = require('../../utils')
 
 Page({
   data: {

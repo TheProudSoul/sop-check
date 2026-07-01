@@ -1,9 +1,6 @@
 const db = wx.cloud.database()
-
-// 深拷贝工具
-function deepClone(obj) {
-  return JSON.parse(JSON.stringify(obj))
-}
+const { deepClone } = require('../../utils')
+const createPosterMixin = require('./sop-poster')
 
 // 默认分组模板
 const defaultGroups = () => deepClone([
@@ -29,7 +26,7 @@ const defaultGroups = () => deepClone([
   ]},
 ])
 
-Page({
+Page(Object.assign({
   data: {
     sop: { title: '', category: '', emoji: '📋', groups: [] },
     isEdit: false,
@@ -298,136 +295,4 @@ Page({
     }
     wx.navigateTo({ url: `/pages/check/check?id=${this.data.sop._id}` })
   },
-
-  // ========== 分享功能 ==========
-  showSharePanel() {
-    this.setData({ showSharePanel: true, posterUrl: '' })
-  },
-
-  hideSharePanel() {
-    this.setData({ showSharePanel: false })
-  },
-
-  onShareAppMessage() {
-    const sop = this.data.sop
-    return {
-      title: `${sop.emoji || '📋'} ${sop.title}`,
-      path: `/pages/share/share?id=${sop._id}`,
-    }
-  },
-
-  // ========== 海报生成 ==========
-  generatePoster() {
-    this.setData({ drawingPoster: true }, () => {
-      setTimeout(() => this.drawPoster(), 100)
-    })
-  },
-
-  drawPoster() {
-    const sop = this.data.sop
-    const ctx = wx.createCanvasContext('posterCanvas', this)
-    const w = 600, h = 800
-
-    // 背景渐变
-    const grad = ctx.createLinearGradient(0, 0, 0, h)
-    grad.addColorStop(0, '#1a1a2e')
-    grad.addColorStop(0.5, '#16213e')
-    grad.addColorStop(1, '#0f3460')
-    ctx.setFillStyle(grad)
-    ctx.fillRect(0, 0, w, h)
-
-    // 品牌色顶部装饰条
-    const brandGrad = ctx.createLinearGradient(0, 0, w, 0)
-    brandGrad.addColorStop(0, '#4ecdc4')
-    brandGrad.addColorStop(1, '#44b09e')
-    ctx.setFillStyle(brandGrad)
-    ctx.fillRect(0, 0, w, 8)
-
-    // Emoji
-    ctx.setFontSize(64)
-    ctx.setFillStyle('#ffffff')
-    ctx.setTextAlign('center')
-    ctx.fillText(sop.emoji || '📋', w / 2, 120)
-
-    // 标题
-    ctx.setFontSize(36)
-    ctx.setFillStyle('#ffffff')
-    ctx.setTextAlign('center')
-    const title = sop.title.length > 16 ? sop.title.substring(0, 16) + '...' : sop.title
-    ctx.fillText(title, w / 2, 190)
-
-    // 分类
-    if (sop.category) {
-      ctx.setFontSize(22)
-      ctx.setFillStyle('rgba(255,255,255,0.5)')
-      ctx.fillText(sop.category, w / 2, 225)
-    }
-
-    // 分隔线
-    ctx.setStrokeStyle('#4ecdc4')
-    ctx.setLineWidth(1)
-    ctx.beginPath()
-    ctx.moveTo(80, 260)
-    ctx.lineTo(w - 80, 260)
-    ctx.stroke()
-
-    // 分组统计
-    let y = 310
-    if (sop.groups) {
-      sop.groups.forEach((g, i) => {
-        if (i >= 6) return
-        ctx.setFontSize(26)
-        ctx.setFillStyle('#4ecdc4')
-        ctx.setTextAlign('left')
-        ctx.fillText(g.name, 80, y)
-        ctx.setFontSize(24)
-        ctx.setFillStyle('rgba(255,255,255,0.6)')
-        ctx.setTextAlign('right')
-        ctx.fillText(g.items.length + '项', w - 80, y)
-        y += 50
-      })
-    }
-
-    // 总计
-    const totalItems = (sop.groups || []).reduce((s, g) => s + (g.items ? g.items.length : 0), 0)
-    y += 20
-    ctx.setFontSize(22)
-    ctx.setFillStyle('rgba(255,255,255,0.4)')
-    ctx.setTextAlign('center')
-    ctx.fillText(`共 ${totalItems} 项 · SOP Check`, w / 2, y)
-
-    // 小程序码占位
-    const qrSize = 100
-    const qrX = (w - qrSize) / 2
-    const qrY = h - 180
-    ctx.setFillStyle('rgba(255,255,255,0.1)')
-    ctx.fillRect(qrX, qrY, qrSize, qrSize)
-    ctx.setFontSize(18)
-    ctx.setFillStyle('rgba(255,255,255,0.3)')
-    ctx.fillText('小程序码', w / 2, qrY + qrSize / 2 + 6)
-
-    // 底部提示
-    ctx.setFontSize(20)
-    ctx.setFillStyle('rgba(255,255,255,0.3)')
-    ctx.fillText('扫码或长按识别使用此SOP', w / 2, h - 40)
-
-    ctx.draw(false, () => {
-      setTimeout(() => {
-        wx.canvasToTempFilePath({
-          canvasId: 'posterCanvas',
-          width: w,
-          height: h,
-          destWidth: w * 2,
-          destHeight: h * 2,
-          success: (res) => {
-            this.setData({ posterUrl: res.tempFilePath, drawingPoster: false })
-          },
-          fail: () => {
-            this.setData({ drawingPoster: false })
-            wx.showToast({ title: '海报生成失败', icon: 'none' })
-          }
-        }, this)
-      }, 300)
-    })
-  },
-})
+}, createPosterMixin()))

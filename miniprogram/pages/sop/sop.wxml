@@ -176,7 +176,7 @@
         <image class="poster-img" src="{{posterUrl}}" mode="widthFix" show-menu-by-longpress="{{true}}"/>
         <text class="poster-hint">长按图片保存到相册</text>
       </view>
-      <canvas canvas-id="posterCanvas" class="poster-canvas" wx:if="{{drawingPoster}}"/>
+      <canvas type="2d" id="posterCanvas" class="poster-canvas" wx:if="{{drawingPoster}}"/>
       <text class="share-close" bindtap="hideSharePanel">关闭</text>
     </view>
   </view>
