@@ -82,8 +82,9 @@ Page({
 
       // 更新用户的 fork_count +1
       try {
+        const openid = await getApp().getOpenid()
         const userRes = await db.collection('users')
-          .where({ _openid: '{openid}' })
+          .where({ _openid: openid })
           .limit(1)
           .get()
         if (userRes.data.length > 0) {

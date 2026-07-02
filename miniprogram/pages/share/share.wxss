@@ -5,7 +5,7 @@
 .page {
   min-height: 100vh;
   background: #f7f8fc;
-  padding-bottom: 200rpx;
+  padding-bottom: 360rpx;
 }
 
 /* hero — 装饰性背景 */

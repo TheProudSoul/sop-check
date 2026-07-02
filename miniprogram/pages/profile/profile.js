@@ -25,9 +25,11 @@ Page({
   async loadUserProfile() {
     this.setData({ loading: true })
     try {
+      const openid = await getApp().getOpenid()
+      if (!openid) { this.setData({ loading: false }); return }
       // 查询 users 集合
       const { data } = await db.collection('users')
-        .where({ _openid: '{openid}' })
+        .where({ _openid: openid })
         .limit(1)
         .get()
 
@@ -58,17 +60,19 @@ Page({
 
   async loadStats(user) {
     try {
+      const openid = await getApp().getOpenid()
+      if (!openid) return
       // 查 SOP 数量（自己创建的，非 fork）
       const mySops = await db.collection('sops')
-        .where({ _openid: '{openid}', forked_from: db.command.eq(null) })
+        .where({ _openid: openid, forked_from: db.command.eq(null) })
         .count()
       // Fork 来的 SOP
       const forkedSops = await db.collection('sops')
-        .where({ _openid: '{openid}', forked_from: db.command.neq(null) })
+        .where({ _openid: openid, forked_from: db.command.neq(null) })
         .count()
       // 使用次数
       const usages = await db.collection('usages')
-        .where({ _openid: '{openid}' })
+        .where({ _openid: openid })
         .count()
 
       this.setData({

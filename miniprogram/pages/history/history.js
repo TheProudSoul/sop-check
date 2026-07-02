@@ -31,7 +31,7 @@ Page({
     try {
       // 查询当前用户的使用记录
       const { data } = await db.collection('usages')
-        .where({ _openid: '{openid}' })
+        .where({ _openid: await getApp().getOpenid() })
         .orderBy('finished_at', 'desc')
         .limit(100)
         .get()

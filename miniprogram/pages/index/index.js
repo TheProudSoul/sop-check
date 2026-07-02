@@ -29,8 +29,10 @@ Page({
 
   async loadSops() {
     try {
+      const openid = await getApp().getOpenid()
+      if (!openid) return
       const { data } = await db.collection('sops')
-        .where({ _openid: '{openid}' })
+        .where({ _openid: openid })
         .orderBy('updated_at', 'desc')
         .get()
       // 给每个 sop 加 timeAgo、groupPreview 和 author 信息
