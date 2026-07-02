@@ -2,33 +2,27 @@ const db = wx.cloud.database()
 const { deepClone } = require('../../utils/index')
 const createPosterMixin = require('./sop-poster')
 
-// 默认分组模板
+// 默认分组模板（空白，引导用户自由填写）
 const defaultGroups = () => deepClone([
-  { name: '穿上身', items: [
-    { name: '越野跑鞋', note: '大半码防顶脚', priority: 'must' },
-    { name: '速干T恤/背心', note: '禁棉！', priority: 'must' },
-    { name: '越野袜', note: '中筒防沙', priority: 'must' },
-  ]},
-  { name: '防护层', items: [
-    { name: '皮肤风衣', note: '<200g', priority: 'must' },
-    { name: '急救毯', note: '铝箔毯，失温救命', priority: 'must' },
-    { name: '防晒霜', note: 'SPF50+', priority: 'must' },
-    { name: '防蚊虫喷雾', note: '', priority: 'recommended' },
-  ]},
-  { name: '补给', items: [
-    { name: '水/水袋', note: '≥2.5L', priority: 'must' },
-    { name: '电解质/盐丸', note: '', priority: 'must' },
-    { name: '能量胶', note: '每45min一支', priority: 'must' },
-  ]},
-  { name: '电子设备', items: [
-    { name: '手机(离线轨迹)', note: '', priority: 'must' },
-    { name: '头灯', note: '即使白天也带', priority: 'must' },
-  ]},
+  { name: '', items: [{ name: '', note: '', priority: 'recommended' }] }
 ])
+
+// 预设分类列表
+const CATEGORY_PRESETS = ['越野跑', '旅行', '露营', '出差', '搬家', '日常', '健身', '考试', '运动', '烹饪', '其他']
+
+// Emoji 分组
+const EMOJI_GROUPS = [
+  { name: '运动', emojis: ['🏃', '🚴', '🏋️', '🎿', '🧗', '🏊', '🤸', '⚽', '🏸', '🎯'] },
+  { name: '户外', emojis: ['🏔️', '🏕️', '🎣', '🚣', '🧭', '🌲', '🏖️', '🌊', '🦋', '🌅'] },
+  { name: '出行', emojis: ['✈️', '🚗', '🎒', '🗺️', '🧳', '🚆', '🛳️', '🚁', '🗼', '🌍'] },
+  { name: '日常', emojis: ['📋', '🏠', '💼', '🛒', '📦', '🔧', '🧹', '💊', '📱', '🛁'] },
+  { name: '美食', emojis: ['🍳', '🥘', '🍕', '🍰', '🧁', '🍜', '🍱', '🥗', '🍻', '☕'] },
+  { name: '学习', emojis: ['📝', '📚', '💻', '🎓', '🔬', '📐', '🎨', '🎵', '📷', '🖋️'] },
+]
 
 Page(Object.assign({
   data: {
-    sop: { title: '', category: '', emoji: '📋', groups: [] },
+    sop: { title: '', category: '', emoji: '📋', groups: [], is_public: true },
     isEdit: false,
     isNew: true,
     // 统计
@@ -39,6 +33,13 @@ Page(Object.assign({
     showSharePanel: false,
     posterUrl: '',
     drawingPoster: false,
+    // 新增 UI 状态
+    showEmojiPanel: false,
+    emojiGroups: EMOJI_GROUPS,
+    categoryPresets: CATEGORY_PRESETS,
+    customCategory: '',
+    showCustomCategory: false,
+    collapsedGroups: {},
   },
 
   onLoad(options) {
@@ -50,7 +51,7 @@ Page(Object.assign({
       this.setData({
         isEdit: true,
         isNew: true,
-        sop: { title: '', category: '', emoji: '📋', groups },
+        sop: { title: '', category: '', emoji: '📋', groups, is_public: true },
       })
       this.updateStats()
     }
@@ -89,12 +90,16 @@ Page(Object.assign({
     this.setData({ groupCount, itemCount, mustCount })
   },
 
-  // 编辑/保存
+  // ========== 编辑/保存 ==========
   editSop() {
-    // 深拷贝备份，取消时可恢复
+    const sop = deepClone(this.data.sop)
+    // 如果当前分类是自定义的（不在预设列表中），设置 customCategory
+    const isPreset = CATEGORY_PRESETS.includes(sop.category)
     this.setData({
       isEdit: true,
       _originalSop: deepClone(this.data.sop),
+      showCustomCategory: !isPreset && sop.category,
+      customCategory: !isPreset ? sop.category : '',
     })
   },
 
@@ -103,10 +108,11 @@ Page(Object.assign({
       wx.navigateBack()
       return
     }
-    // 恢复到编辑前
     this.setData({
       isEdit: false,
       sop: this.data._originalSop || this.data.sop,
+      showEmojiPanel: false,
+      collapsedGroups: {},
     })
     this.updateStats()
   },
@@ -131,28 +137,25 @@ Page(Object.assign({
       if (this.data.isNew) {
         sop.created_at = now
         sop.is_public = sop.is_public !== undefined ? sop.is_public : true
-        // 添加作者信息
         const currentUser = getApp().globalData.userInfo
         sop.author_id = currentUser ? currentUser._id : ''
         sop.author_name = currentUser ? currentUser.nickname : '勾友'
         sop.author_avatar = currentUser ? currentUser.avatar_url : ''
         const { _id } = await db.collection('sops').add({ data: sop })
         sop._id = _id
-        this.setData({ isNew: false, isEdit: false, sop })
+        this.setData({ isNew: false, isEdit: false, sop, collapsedGroups: {} })
       } else {
-        // 云端 update 不能带 _id 和 _openid
         const updateData = deepClone(sop)
         delete updateData._id
         delete updateData._openid
         await db.collection('sops').doc(sop._id).update({ data: updateData })
-        this.setData({ isEdit: false })
+        this.setData({ isEdit: false, collapsedGroups: {} })
       }
       this.updateStats()
       getApp().globalData.sopNeedsRefresh = true
       wx.showToast({ title: '已保存', icon: 'success' })
     } catch (e) {
       console.error('保存失败', e)
-      // 本地fallback
       const local = wx.getStorageSync('sops') || []
       if (this.data.isNew) {
         sop._id = 'local_' + Date.now()
@@ -163,7 +166,7 @@ Page(Object.assign({
         if (idx >= 0) local[idx] = deepClone(sop)
       }
       wx.setStorageSync('sops', local)
-      this.setData({ isNew: false, isEdit: false, sop })
+      this.setData({ isNew: false, isEdit: false, sop, collapsedGroups: {} })
       this.updateStats()
       getApp().globalData.sopNeedsRefresh = true
       wx.showToast({ title: '已保存(本地)', icon: 'success' })
@@ -185,7 +188,7 @@ Page(Object.assign({
     wx.navigateBack()
   },
 
-  // 输入
+  // ========== 输入事件 ==========
   onTitleInput(e) { this.setData({ 'sop.title': e.detail.value }) },
   onCategoryInput(e) { this.setData({ 'sop.category': e.detail.value }) },
   onGroupNameInput(e) {
@@ -200,10 +203,58 @@ Page(Object.assign({
     this.setData({ [`sop.groups[${gidx}].items[${iidx}].note`]: e.detail.value })
   },
 
-  // 分组/条目操作 — 使用深拷贝防止引用污染
+  // ========== 分类选择 ==========
+  onCategorySelect(e) {
+    const cat = e.currentTarget.dataset.cat
+    if (cat === '其他') {
+      this.setData({
+        'sop.category': '其他',
+        showCustomCategory: true,
+      })
+    } else {
+      this.setData({
+        'sop.category': cat,
+        showCustomCategory: false,
+        customCategory: '',
+      })
+    }
+  },
+
+  onCustomCategoryInput(e) {
+    const val = e.detail.value
+    this.setData({
+      customCategory: val,
+      'sop.category': val || '其他',
+    })
+  },
+
+  // ========== Emoji 弹窗 ==========
+  showEmojiPicker() {
+    this.setData({ showEmojiPanel: true })
+  },
+
+  hideEmojiPicker() {
+    this.setData({ showEmojiPanel: false })
+  },
+
+  selectEmoji(e) {
+    this.setData({
+      'sop.emoji': e.currentTarget.dataset.emoji,
+      showEmojiPanel: false,
+    })
+  },
+
+  // ========== 分组折叠 ==========
+  toggleGroupCollapse(e) {
+    const gIdx = e.currentTarget.dataset.gidx
+    const key = `collapsedGroups.${gIdx}`
+    this.setData({ [key]: !this.data.collapsedGroups[gIdx] })
+  },
+
+  // ========== 分组/条目操作 ==========
   addGroup() {
     const groups = deepClone(this.data.sop.groups)
-    groups.push({ name: '', items: [] })
+    groups.push({ name: '', items: [{ name: '', note: '', priority: 'recommended' }] })
     this.setData({ 'sop.groups': groups })
   },
 
@@ -239,31 +290,7 @@ Page(Object.assign({
     this.updateStats()
   },
 
-  pickEmoji() {
-    const emojiGroups = [
-      { name: '运动', emojis: ['🏃', '🚴', '🏋️', '🎿', '🧗'] },
-      { name: '户外', emojis: ['🏔️', '🏕️', '🎣', '🚣', '🧭'] },
-      { name: '出行', emojis: ['✈️', '🚗', '🎒', '🗺️', '🧳'] },
-      { name: '日常', emojis: ['📋', '🏠', '💼', '🛒', '📦'] },
-    ]
-    const list = emojiGroups.map(g => g.name + ' ' + g.emojis.join(' '))
-    wx.showActionSheet({
-      itemList: list,
-      success: (res) => {
-        const group = emojiGroups[res.tapIndex]
-        if (group) {
-          // 二级选择
-          wx.showActionSheet({
-            itemList: group.emojis,
-            success: (res2) => {
-              this.setData({ 'sop.emoji': group.emojis[res2.tapIndex] })
-            }
-          })
-        }
-      }
-    })
-  },
-
+  // ========== 导航/公开 ==========
   goBack() {
     wx.navigateBack()
   },
@@ -271,7 +298,6 @@ Page(Object.assign({
   togglePublic() {
     const newVal = !this.data.sop.is_public
     this.setData({ 'sop.is_public': newVal })
-    // 如果非编辑模式，直接保存
     if (!this.data.isEdit && this.data.sop._id) {
       db.collection('sops').doc(this.data.sop._id).update({
         data: { is_public: newVal }
@@ -279,10 +305,7 @@ Page(Object.assign({
     }
   },
 
-  // 微信分享（由分享弹窗中的 open-type="share" 触发）
-
   startCheck() {
-    // Bug修复：编辑后未保存直接打勾，先自动保存
     if (this.data.isEdit) {
       this.saveSop().then(() => {
         wx.navigateTo({ url: `/pages/check/check?id=${this.data.sop._id}` })
