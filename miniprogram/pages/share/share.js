@@ -97,7 +97,7 @@ Page({
       wx.vibrateShort()
       wx.showToast({ title: 'Fork成功！', icon: 'success' })
       getApp().globalData.sopNeedsRefresh = true
-      setTimeout(() => wx.reLaunch({ url: '/pages/index/index' }), 1200)
+      setTimeout(() => wx.switchTab({ url: '/pages/index/index' }), 1200)
     } catch (e) {
       // 本地fallback
       forked._id = 'local_' + Date.now()
@@ -107,7 +107,7 @@ Page({
 
       wx.showToast({ title: 'Fork成功(本地)！', icon: 'success' })
       getApp().globalData.sopNeedsRefresh = true
-      setTimeout(() => wx.reLaunch({ url: '/pages/index/index' }), 1200)
+      setTimeout(() => wx.switchTab({ url: '/pages/index/index' }), 1200)
     }
   },
 

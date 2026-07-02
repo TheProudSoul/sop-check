@@ -24,6 +24,7 @@
   background: rgba(78,205,196,0.08);
   top: -100rpx;
   right: -60rpx;
+  pointer-events: none;
 }
 
 .profile-header::after {
@@ -35,6 +36,7 @@
   background: rgba(255,255,255,0.05);
   bottom: -60rpx;
   left: -40rpx;
+  pointer-events: none;
 }
 
 .profile-avatar-wrap {
@@ -86,7 +88,10 @@
 .profile-edit-link {
   margin-top: 12rpx;
   position: relative;
-  z-index: 1;
+  z-index: 10;
+  padding: 8rpx 28rpx;
+  background: rgba(78,205,196,0.15);
+  border-radius: 24rpx;
 }
 
 .profile-edit-text {

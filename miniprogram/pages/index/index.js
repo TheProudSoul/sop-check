@@ -10,17 +10,15 @@ Page({
   },
 
   onLoad() {
-    this.loadSops()
+    // onShow 会负责加载，不重复调用
   },
 
   onShow() {
-    // 刷新用户信息
     const app = getApp()
     this.setData({ userInfo: app.globalData.userInfo || null })
-    if (app.globalData.sopNeedsRefresh) {
-      this.loadSops()
-      app.globalData.sopNeedsRefresh = false
-    }
+    // 每次显示都重新加载，确保 fork/新建后刷新
+    this.loadSops()
+    app.globalData.sopNeedsRefresh = false
   },
 
   onPullDownRefresh() {
