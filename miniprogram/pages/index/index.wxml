@@ -1,8 +1,15 @@
 <view class="container">
-  <!-- 顶部状态栏 -->
+  <!-- 顶部品牌区 -->
   <view class="header header-curved">
-    <text class="title">勾GO</text>
-    <text class="subtitle">勾完再走</text>
+    <view class="brand-row">
+      <view class="logo-mark">
+        <text class="logo-check">✓</text>
+      </view>
+      <view class="brand-text">
+        <text class="title">勾GO</text>
+        <text class="subtitle">勾完再走</text>
+      </view>
+    </view>
     <view class="slogan-line"/>
   </view>
 

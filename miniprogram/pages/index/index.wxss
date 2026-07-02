@@ -4,35 +4,104 @@
 }
 
 .header {
-  padding: 60rpx 40rpx 30rpx;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  padding: 80rpx 40rpx 40rpx;
+  background: linear-gradient(135deg, #0f1923 0%, #1a2a3a 50%, #16213e 100%);
   color: #fff;
   position: relative;
+  overflow: hidden;
+}
+
+/* 背景装饰光斑 */
+.header::before {
+  content: '';
+  position: absolute;
+  top: -60rpx;
+  right: -40rpx;
+  width: 240rpx;
+  height: 240rpx;
+  background: radial-gradient(circle, rgba(78,205,196,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -30rpx;
+  left: 60rpx;
+  width: 160rpx;
+  height: 160rpx;
+  background: radial-gradient(circle, rgba(78,205,196,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+/* 品牌横排 */
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  position: relative;
+  z-index: 1;
+}
+
+/* Logo 图标 */
+.logo-mark {
+  width: 88rpx;
+  height: 88rpx;
+  background: linear-gradient(135deg, #4ecdc4 0%, #44b8b0 100%);
+  border-radius: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(78,205,196,0.35);
+  transform: rotate(-6deg);
+  flex-shrink: 0;
+}
+
+.logo-check {
+  font-size: 48rpx;
+  color: #fff;
+  font-weight: 800;
+  transform: rotate(6deg);
+  text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.15);
+}
+
+/* 品牌文字 */
+.brand-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
-  font-size: 48rpx;
-  font-weight: 700;
+  font-size: 52rpx;
+  font-weight: 800;
   display: block;
+  letter-spacing: 4rpx;
+  background: linear-gradient(90deg, #fff 0%, #e0f7f5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
-  font-size: 26rpx;
-  color: rgba(255,255,255,0.7);
-  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.55);
+  margin-top: 4rpx;
   display: block;
+  letter-spacing: 8rpx;
+  font-weight: 300;
 }
 
 /* Slogan 细线动画 */
 .slogan-line {
-  margin-top: 16rpx;
+  margin-top: 24rpx;
   height: 2rpx;
-  background: linear-gradient(90deg, transparent, #4ecdc4, transparent);
+  background: linear-gradient(90deg, transparent, rgba(78,205,196,0.6), transparent);
   animation: sloganGlow 3s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes sloganGlow {
-  0%, 100% { opacity: 0.4; transform: scaleX(0.6); }
+  0%, 100% { opacity: 0.3; transform: scaleX(0.5); }
   50% { opacity: 1; transform: scaleX(1); }
 }
 
