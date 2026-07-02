@@ -51,6 +51,8 @@ Page({
         const { _id } = await db.collection('users').add({ data: newUser })
         newUser._id = _id
         this.setData({ userInfo: newUser })
+        // 新用户自动弹出编辑面板引导设置昵称头像
+        setTimeout(() => this.showEdit(), 300)
       }
     } catch (e) {
       console.error('加载用户信息失败', e)
