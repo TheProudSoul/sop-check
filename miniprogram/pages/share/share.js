@@ -62,7 +62,7 @@ Page({
       emoji: original.emoji,
       groups: deepClone(original.groups || []),
       forked_from: original._id,
-      is_public: true,
+      is_public: false,
       fork_count: 0,
       author_id: currentUser ? currentUser._id : '',
       author_name: currentUser ? currentUser.nickname : '勾友',
