@@ -19,11 +19,27 @@ App({
   },
 
   async _initOpenid() {
+    // 方法一：云函数获取
     try {
       const { result } = await wx.cloud.callFunction({ name: 'getOpenid' })
       this.globalData.openid = result.openid
     } catch (e) {
-      console.error('获取openid失败', e)
+      console.error('云函数获取openid失败，尝试备用方案', e)
+    }
+    // 方法二：如果云函数失败，通过写一条临时数据再读回来获取 _openid
+    if (!this.globalData.openid) {
+      try {
+        const db = wx.cloud.database()
+        const { _id } = await db.collection('users').add({
+          data: { _probe: true, created_at: new Date().toISOString() }
+        })
+        const { data } = await db.collection('users').doc(_id).get()
+        this.globalData.openid = data._openid
+        // 清理探针数据
+        await db.collection('users').doc(_id).remove()
+      } catch (e2) {
+        console.error('备用openid获取也失败', e2)
+      }
     }
     await this.loadUserInfo()
   },

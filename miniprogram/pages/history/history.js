@@ -30,8 +30,12 @@ Page({
 
     try {
       // 查询当前用户的使用记录
-      const { data } = await db.collection('usages')
-        .where({ _openid: await getApp().getOpenid() })
+      const openid = await getApp().getOpenid()
+      let query = db.collection('usages')
+      if (openid) {
+        query = query.where({ _openid: openid })
+      }
+      const { data } = await query
         .orderBy('finished_at', 'desc')
         .limit(100)
         .get()

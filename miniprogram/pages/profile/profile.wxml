@@ -1,6 +1,6 @@
 <view class="container">
   <!-- 顶部个人卡片 -->
-  <view class="profile-header header-curved">
+  <view class="profile-header header-curved" bindtap="showEdit">
     <view class="profile-avatar-wrap" wx:if="{{userInfo}}">
       <image class="profile-avatar" src="{{userInfo.avatar_url || '/assets/default-avatar.png'}}" mode="aspectFill"/>
     </view>
@@ -10,9 +10,9 @@
       </view>
     </view>
     <text class="profile-nickname">{{userInfo.nickname || '勾友'}}</text>
-    <text class="profile-bio" bindtap="showEdit">{{userInfo.bio || '点击编辑简介'}}</text>
-    <view class="profile-edit-link" bindtap="showEdit">
-      <text class="profile-edit-text">编辑资料</text>
+    <text class="profile-bio">{{userInfo.bio || '点击编辑简介'}}</text>
+    <view class="profile-edit-link">
+      <text class="profile-edit-text">编辑资料 ›</text>
     </view>
   </view>
 
